@@ -1,0 +1,8 @@
+VERSION 0.8
+
+all: 
+	BUILD +test
+
+test:
+    FROM ../base+reth
+    RUN echo "TODO"

@@ -1,0 +1,13 @@
+VERSION 0.8
+
+rust-builder:
+    FROM rust:buster
+    RUN apt-get update && apt-get install -y clang
+    # cargo-nextest
+    COPY ./apps/* /usr/local/bin
+
+reth:
+    FROM +rust-builder
+    GIT CLONE https://github.com/paradigmxyz/reth reth
+    ENV RUST_BACKTRACE 1
+    WORKDIR reth

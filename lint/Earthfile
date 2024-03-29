@@ -1,0 +1,22 @@
+VERSION 0.8
+
+all: 
+    BUILD +crate-check
+    BUILD +clippy
+    BUILD +fmt
+
+# most run test
+crate-check:
+    FROM ../base+reth
+    RUN echo "crate-check"
+    # RUN cargo hack check
+
+clippy:
+    FROM ../base+reth
+    RUN echo "clippy"
+    # RUN cargo clippy --workspace --lib --examples --tests --benches --all-features --locked
+
+fmt:
+    FROM ../base+reth
+    RUN echo "fmt"
+    # RUN cargo fmt --all --check

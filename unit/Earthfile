@@ -1,31 +1,31 @@
 VERSION 0.8
 
 all: 
-    BUILD ../base+rust-builder
-    BUILD ../base+reth
-
-    BUILD +unit-test
+    BUILD +unit-test --network ethereum --network optimism --partition 1 --partition 2
+    BUILD +doc-test --network ethereum --network optimism
     BUILD +state-test
-    BUILD +doc-test
 
 # most run test
 unit-test:
     FROM ../base+reth
-    RUN echo "unit-test"
-    # RUN cargo nextest run --workspace --locked --exclude examples --exclude ef-tests
+    ARG network
+    # RUN echo "test-run unit-test"
+    RUN cargo nextest run \
+            --locked --features "asm-keccak $network" \
+            --workspace --exclude examples --exclude ef-tests \
+            --partition hash:$partition/2 \
+            -E "!kind(test)"
 
 # slow test
 state-test:
     FROM ../base+reth
     GIT CLONE https://github.com/ethereum/tests reth/testing/ef-tests/ethereum-tests
     WORKDIR reth/ef-tests/ethereum-tests
-    RUN echo "state-test"
+    RUN echo "test-run state-test"
     # RUN cargo nextest run --release -p ef-tests --features "asm-keccak ef-tests"
 
 doc-test:
     FROM ../base+reth
-    GIT CLONE https://github.com/paradigmxyz/reth reth
-    RUN echo "doc-test"
-    # RUN cargo test --doc
-
-# release management
+    ARG network
+    # RUN echo "test-run doc-test $network"
+    # RUN cargo test --doc --workspace --features "$network"

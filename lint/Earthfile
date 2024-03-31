@@ -2,8 +2,13 @@ VERSION 0.8
 
 all: 
     BUILD +crate-check
-    BUILD +clippy
+    BUILD +clippy --binary reth --network ethereum
+    BUILD +clippy --binary op-reth --network optimism
+    BUILD +msrv --binary reth --network ethereum
+    BUILD +msrv --binary op-reth --network optimism
     BUILD +fmt
+    BUILD +grafana
+    BUILD +docs
 
 # most run test
 crate-check:
@@ -11,12 +16,34 @@ crate-check:
     RUN echo "crate-check"
     # RUN cargo hack check
 
+msrv: 
+    FROM ../base+reth
+    ENV RUSTFLAGS="-D warnings"
+    ARG binary
+    ARG network
+    RUN cargo build --bin "$binary" --workspace --features "$network"
+
 clippy:
     FROM ../base+reth
-    RUN echo "clippy"
-    # RUN cargo clippy --workspace --lib --examples --tests --benches --all-features --locked
+    ENV RUSTFLAGS="-D warnings"
+    ARG binary
+    ARG network
+    RUN echo "test-run $binary $network"
+    RUN cargo clippy --bin "$binary" --workspace --features "$network asm-keccak jemalloc jemalloc-prof min-error-logs min-warn-logs min-info-logs min-debug-logs min-trace-logs"
+
+docs:
+    FROM ../base+reth
+    ENV RUSTDOCFLAGS="--cfg docsrs --show-type-layout --generate-link-to-definition --enable-index-page
+            -Zunstable-options -D warnings"
+    RUN echo "test-run"
+    # RUN cargo docs --document-private-items
 
 fmt:
     FROM ../base+reth
-    RUN echo "fmt"
+    RUN echo "test-run"
     # RUN cargo fmt --all --check
+
+grafana:
+    FROM ../base+reth
+    RUN echo "test-run"
+    # RUN jq empty etc/grafana/dashboards/overview.json

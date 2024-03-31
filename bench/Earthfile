@@ -1,13 +1,10 @@
 VERSION 0.8
 
 # TODO
-
-with-tools:
-	FROM ../base+reth	
-	RUN apt install -y valgrind
+all:
 
 gen-test-vectors:
-	FROM +with-tools
+	FROM ../base+reth
 	RUN cd ..; cargo run --bin reth --manifest-path reth/Cargo.toml -- test-vectors tables
 	RUN cp -r testdata reth
 	RUN mv testdata pr

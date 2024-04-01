@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # delete update-deps branch if it exists and create new one and checkout to it
 git branch -D update-deps

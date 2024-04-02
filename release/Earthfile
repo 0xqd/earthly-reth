@@ -1,0 +1,12 @@
+VERSION 0.8
+
+# release workflow
+
+all: 
+	BUILD +release
+
+# limited: Limit to linux release for now
+release:
+	FROM ../base+reth
+	# RUN echo "test-run release"
+	RUN make build-native-$(rustc -Vv | grep host | cut -d ' ' -f2)

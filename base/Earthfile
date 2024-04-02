@@ -4,8 +4,10 @@ rust-builder:
     FROM rust:buster
     RUN apt-get update && apt-get install -y clang valgrind jq
     RUN rustup component add clippy
-    # cargo-nextest
+    # cargo-nextest, buildcache
     COPY ./apps/* /usr/local/bin
+    # cargo config with buildcache wrapper
+    COPY ./files/.cargo ~/.cargo
 
 reth:
     FROM +rust-builder

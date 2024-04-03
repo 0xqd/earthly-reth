@@ -13,4 +13,5 @@ Earthly doesn't support Windows at the moment, you need to rely on Github to do 
 
 ## Hardware requirement
 64Gb Ram or more is recommended. 
+
 64 cores CPU or more will fly through all the workflows.

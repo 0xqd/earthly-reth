@@ -8,6 +8,9 @@ An alternative to github workflows being used by reth at the moment. This aims t
 2. Parallelization: Build steps will be parallelized by Earthly
 3. Cloud agnostic: Can be run on any cloud provider (Hetzner, AWS, GCP, Azure)
 
+# Building 
+WIP
+
 # Limited
 Earthly doesn't support Windows at the moment, you need to rely on Github to do Windows release.
 

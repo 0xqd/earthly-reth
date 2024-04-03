@@ -21,11 +21,11 @@ state-test:
     FROM ../base+reth
     GIT CLONE https://github.com/ethereum/tests reth/testing/ef-tests/ethereum-tests
     WORKDIR reth/ef-tests/ethereum-tests
-    RUN echo "test-run state-test"
-    # RUN cargo nextest run --release -p ef-tests --features "asm-keccak ef-tests"
+    # RUN echo "test-run state-test"
+    RUN cargo nextest run --release -p ef-tests --features "asm-keccak ef-tests"
 
 doc-test:
     FROM ../base+reth
     ARG network
     # RUN echo "test-run doc-test $network"
-    # RUN cargo test --doc --workspace --features "$network"
+    RUN cargo test --doc --workspace --features "$network"
